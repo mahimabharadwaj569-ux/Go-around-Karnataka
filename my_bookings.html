@@ -1,0 +1,24 @@
+{% extends "base.html" %}{% block title %}My Bookings | Trip Companion{% endblock %}
+{% block content %}<section class="page-hero compact-hero"><span class="eyebrow">YOUR SAVED STAYS</span>
+    <h1>My booking requests</h1>
+    <p>Keep your intended stays together while planning.</p>
+</section>
+<section class="section">
+    <div class="section-heading">
+        <div>
+            <h2>Requests you've saved</h2>
+        </div><a class="btn btn-primary" href="{{ url_for('hotels') }}">＋ Find a stay</a>
+    </div>{% if bookings %}<div class="booking-list">{% for b in bookings %}<article class="booking-row">
+            <div class="booking-icon">⌂</div>
+            <div class="booking-main">
+                <h3>{{ b.property_name }}</h3>
+                <p>{{ b.district }} · {{ b.booking_type }} · {{ b.guests }} guest{{ '' if b.guests == 1 else 's' }}</p>
+                <small>{{ b.check_in }} → {{ b.check_out }}</small>
+            </div><span class="status-pill">{{ b.status }}</span>
+        </article>{% endfor %}</div>{% else %}<div class="empty-state">
+        <h2>No booking requests yet</h2>
+        <p>Explore stay ideas and save a demo request here.</p><a class="btn btn-primary"
+            href="{{ url_for('hotels') }}">Browse stays</a>
+    </div>{% endif %}<div class="notice">These are saved demo requests only. They are not sent to accommodation
+        providers and do not confirm availability.</div>
+</section>{% endblock %}

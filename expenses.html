@@ -1,0 +1,490 @@
+{% extends "base.html" %}
+{% block title %}Expenses & Hotel Budget | Trip Companion{% endblock %}
+
+{% block content %}
+
+<section class="page-hero compact-hero">
+    <span class="eyebrow">SMART TRAVEL BUDGET</span>
+    <h1>Every rupee, accounted for.</h1>
+    <p>Estimate hotel prices, plan your stay and track your Karnataka trip expenses across all 31 districts.</p>
+</section>
+
+<section class="section">
+
+    <!-- HOTEL ESTIMATOR -->
+    <div class="panel hotel-estimator">
+        <span class="eyebrow">STAY PLANNER</span>
+        <h2>🏨 Estimate your hotel booking</h2>
+        <p>Select your destination and accommodation type to calculate the approximate cost.</p>
+
+        <form method="post" class="form-stack" id="hotelForm">
+
+            <label>Destination district
+                <select id="destination" required>
+                    <option value="Bagalkot">Bagalkot</option>
+                    <option value="Ballari">Ballari</option>
+                    <option value="Belagavi">Belagavi</option>
+                    <option value="Bengaluru Rural">Bengaluru Rural</option>
+                    <option value="Bengaluru Urban">Bengaluru Urban</option>
+                    <option value="Bidar">Bidar</option>
+                    <option value="Chamarajanagar">Chamarajanagar</option>
+                    <option value="Chikkaballapura">Chikkaballapura</option>
+                    <option value="Chikkamagaluru">Chikkamagaluru</option>
+                    <option value="Chitradurga">Chitradurga</option>
+                    <option value="Dakshina Kannada">Dakshina Kannada</option>
+                    <option value="Davanagere">Davanagere</option>
+                    <option value="Dharwad">Dharwad</option>
+                    <option value="Gadag">Gadag</option>
+                    <option value="Hassan">Hassan</option>
+                    <option value="Haveri">Haveri</option>
+                    <option value="Kalaburagi">Kalaburagi</option>
+                    <option value="Kodagu">Kodagu (Coorg)</option>
+                    <option value="Kolar">Kolar</option>
+                    <option value="Koppal">Koppal</option>
+                    <option value="Mandya">Mandya</option>
+                    <option value="Mysuru">Mysuru</option>
+                    <option value="Raichur">Raichur</option>
+                    <option value="Ramanagara">Ramanagara</option>
+                    <option value="Shivamogga">Shivamogga</option>
+                    <option value="Tumakuru">Tumakuru</option>
+                    <option value="Udupi">Udupi</option>
+                    <option value="Uttara Kannada">Uttara Kannada</option>
+                    <option value="Vijayanagara">Vijayanagara</option>
+                    <option value="Vijayapura">Vijayapura</option>
+                    <option value="Yadgir">Yadgir</option>
+                </select>
+            </label>
+
+            <label>Preferred accommodation
+                <select id="hotelType" required>
+                    <option value="budget">Budget hotel / lodge</option>
+                    <option value="mid">Mid-range hotel / homestay</option>
+                    <option value="luxury">Luxury hotel / resort</option>
+                </select>
+            </label>
+
+            <div class="form-two">
+                <label>Check-in date
+                    <input type="date" id="checkin" value="{{ today|default('') }}" required>
+                </label>
+
+                <label>Check-out date
+                    <input type="date" id="checkout" required>
+                </label>
+            </div>
+
+            <label>Number of rooms
+                <input type="number" id="rooms" min="1" max="20" value="1" required>
+            </label>
+
+            <!-- LIVE HOTEL ESTIMATE -->
+            <div class="hotel-price-card">
+                <span class="eyebrow">ESTIMATED STAY COST</span>
+                <h2 id="hotelTotal">₹1,200</h2>
+                <p id="hotelDetails">1 night · 1 room</p>
+                <p id="hotelLocation">Suggested area: Bagalkot town</p>
+                <small>
+                    These are illustrative project-demo prices, not live
+                    hotel quotations. Actual rates may vary by property,
+                    dates, availability and taxes.
+                </small>
+            </div>
+
+            <!-- HOTEL ESTIMATE SUBMITTED TO FLASK -->
+            <input type="hidden" name="title" id="expenseTitle">
+            <input type="hidden" name="amount" id="expenseAmount">
+            <input type="hidden" name="category" value="Hotel">
+            <input type="hidden" name="expense_date" id="expenseDate">
+
+            <button type="submit" class="btn btn-primary full">
+                ＋ Add hotel estimate to expenses
+            </button>
+        </form>
+    </div>
+
+    <!-- TOTAL EXPENSES AND EXPENSE FORM -->
+    <div class="expense-layout" style="margin-top:30px">
+
+        <div class="expense-total">
+            <span>Total recorded expenses</span>
+            <strong>
+                ₹{{ '%.2f'|format(total|default(0)|float) }}
+            </strong>
+            <small>Includes expenses already saved to your account.</small>
+        </div>
+
+        <div class="expense-content">
+
+            <!-- ADD MANUAL EXPENSE -->
+            <div class="panel">
+                <span class="eyebrow">TRACK YOUR SPENDING</span>
+                <h2>Add another trip expense</h2>
+
+                <form method="post" class="form-stack">
+
+                    <label>Expense name
+                        <input type="text" name="title" required maxlength="150" placeholder="Bus ticket to Mysuru">
+                    </label>
+
+                    <div class="form-two">
+                        <label>Amount (₹)
+                            <input type="number" name="amount" min="0.01" step="0.01" required placeholder="250.00">
+                        </label>
+
+                        <label>Date
+                            <input type="date" name="expense_date" value="{{ today|default('') }}" required>
+                        </label>
+                    </div>
+
+                    <label>Category
+                        <select name="category" required>
+                            <option value="Transport">Transport</option>
+                            <option value="Hotel">Hotel</option>
+                            <option value="Food">Food</option>
+                            <option value="Tickets">Tickets</option>
+                            <option value="Shopping">Shopping</option>
+                            <option value="Fuel">Fuel</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </label>
+
+                    <button class="btn btn-primary full" type="submit">
+                        ＋ Add expense
+                    </button>
+                </form>
+            </div>
+
+            <!-- SAVED EXPENSES TABLE -->
+            {% if expenses %}
+            <div class="table-wrap" style="margin-top:24px">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Expense</th>
+                            <th>Category</th>
+                            <th>Date</th>
+                            <th>Amount</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for e in expenses %}
+                        <tr>
+                            <td><strong>{{ e.title }}</strong></td>
+                            <td>{{ e.category }}</td>
+                            <td>{{ e.expense_date }}</td>
+                            <td>
+                                ₹{{ '%.2f'|format(e.amount|float) }}
+                            </td>
+                            <td>
+                                <form method="post" action="{{ url_for('delete_expense', expense_id=e.id) }}"
+                                    onsubmit="return confirm('Delete this expense?')">
+                                    <button type="submit" class="icon-button" title="Delete expense"
+                                        aria-label="Delete {{ e.title }}">
+                                        ×
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {% else %}
+            <div class="empty-state">
+                <h2>No expenses yet</h2>
+                <p>Add your first trip cost or save a hotel estimate.</p>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+</section>
+
+<script>
+    "use strict";
+
+    // ================================================
+    // HOTEL PRICES FOR ALL 31 KARNATAKA DISTRICTS
+    // All prices are illustrative per room per night.
+    // ================================================
+
+    const hotelPrices = {
+        "Bagalkot": {
+            budget: 1200, mid: 2800, luxury: 6000,
+            area: "Bagalkot town"
+        },
+        "Ballari": {
+            budget: 1400, mid: 3200, luxury: 7000,
+            area: "Ballari city centre"
+        },
+        "Belagavi": {
+            budget: 1600, mid: 3800, luxury: 8500,
+            area: "Belagavi city centre"
+        },
+        "Bengaluru Rural": {
+            budget: 1500, mid: 3500, luxury: 9000,
+            area: "Devanahalli or Doddaballapur"
+        },
+        "Bengaluru Urban": {
+            budget: 2200, mid: 5000, luxury: 12000,
+            area: "MG Road, Koramangala or Indiranagar"
+        },
+        "Bidar": {
+            budget: 1200, mid: 2800, luxury: 6000,
+            area: "Bidar town near Bidar Fort"
+        },
+        "Chamarajanagar": {
+            budget: 1200, mid: 2800, luxury: 6000,
+            area: "Chamarajanagar town"
+        },
+        "Chikkaballapura": {
+            budget: 1500, mid: 3500, luxury: 9000,
+            area: "Chikkaballapura town or Nandi Hills vicinity"
+        },
+        "Chikkamagaluru": {
+            budget: 2200, mid: 5000, luxury: 12000,
+            area: "Town centre or coffee estate areas"
+        },
+        "Chitradurga": {
+            budget: 1300, mid: 3000, luxury: 6500,
+            area: "Chitradurga town near the fort"
+        },
+        "Dakshina Kannada": {
+            budget: 1800, mid: 4500, luxury: 11000,
+            area: "Mangaluru city or beach areas"
+        },
+        "Davanagere": {
+            budget: 1400, mid: 3200, luxury: 7000,
+            area: "Davanagere city centre"
+        },
+        "Dharwad": {
+            budget: 1500, mid: 3500, luxury: 8000,
+            area: "Dharwad town or nearby Hubballi"
+        },
+        "Gadag": {
+            budget: 1200, mid: 2800, luxury: 6000,
+            area: "Gadag town centre"
+        },
+        "Hassan": {
+            budget: 1500, mid: 3500, luxury: 8000,
+            area: "Hassan city or Belur-Halebidu route"
+        },
+        "Haveri": {
+            budget: 1200, mid: 2800, luxury: 6000,
+            area: "Haveri town"
+        },
+        "Kalaburagi": {
+            budget: 1400, mid: 3200, luxury: 7000,
+            area: "Kalaburagi city centre"
+        },
+        "Kodagu": {
+            budget: 2500, mid: 6000, luxury: 18000,
+            area: "Madikeri, Virajpet or plantation areas"
+        },
+        "Kolar": {
+            budget: 1300, mid: 3000, luxury: 6500,
+            area: "Kolar town"
+        },
+        "Koppal": {
+            budget: 1200, mid: 2800, luxury: 6500,
+            area: "Koppal town or Gangavathi"
+        },
+        "Mandya": {
+            budget: 1300, mid: 3000, luxury: 6500,
+            area: "Mandya town or Srirangapatna"
+        },
+        "Mysuru": {
+            budget: 1800, mid: 4500, luxury: 10000,
+            area: "Near Mysore Palace or Nazarbad"
+        },
+        "Raichur": {
+            budget: 1300, mid: 3000, luxury: 6500,
+            area: "Raichur city centre"
+        },
+        "Ramanagara": {
+            budget: 1500, mid: 3500, luxury: 8500,
+            area: "Ramanagara town or Kanakapura road"
+        },
+        "Shivamogga": {
+            budget: 1600, mid: 3800, luxury: 9000,
+            area: "Shivamogga city or Jog Falls route"
+        },
+        "Tumakuru": {
+            budget: 1400, mid: 3200, luxury: 7500,
+            area: "Tumakuru city centre"
+        },
+        "Udupi": {
+            budget: 1500, mid: 3500, luxury: 8000,
+            area: "Near Krishna Matha or Malpe Beach"
+        },
+        "Uttara Kannada": {
+            budget: 1800, mid: 4000, luxury: 10000,
+            area: "Karwar, Gokarna or Sirsi"
+        },
+        "Vijayanagara": {
+            budget: 1500, mid: 3500, luxury: 8000,
+            area: "Hosapete or Hampi"
+        },
+        "Vijayapura": {
+            budget: 1300, mid: 3000, luxury: 6500,
+            area: "Vijayapura city centre"
+        },
+        "Yadgir": {
+            budget: 1100, mid: 2500, luxury: 5500,
+            area: "Yadgir town"
+        }
+    };
+
+    // ================================================
+    // GET HTML ELEMENTS
+    // ================================================
+
+    const destination = document.getElementById("destination");
+    const hotelType = document.getElementById("hotelType");
+    const checkin = document.getElementById("checkin");
+    const checkout = document.getElementById("checkout");
+    const rooms = document.getElementById("rooms");
+    const hotelForm = document.getElementById("hotelForm");
+
+    const hotelTotal = document.getElementById("hotelTotal");
+    const hotelDetails = document.getElementById("hotelDetails");
+    const hotelLocation = document.getElementById("hotelLocation");
+
+    const expenseTitle = document.getElementById("expenseTitle");
+    const expenseAmount = document.getElementById("expenseAmount");
+    const expenseDate = document.getElementById("expenseDate");
+
+    // ================================================
+    // FORMAT AMOUNTS IN INDIAN RUPEES
+    // ================================================
+
+    function money(value) {
+        return "₹" + Number(value).toLocaleString("en-IN", {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2
+        });
+    }
+
+    // ================================================
+    // CALCULATE HOTEL ESTIMATE
+    // ================================================
+
+    function calculateHotel() {
+        const place = destination.value;
+        const category = hotelType.value;
+        const hotel = hotelPrices[place];
+
+        if (!hotel) {
+            return;
+        }
+
+        const start = checkin.value
+            ? new Date(checkin.value + "T00:00:00")
+            : null;
+
+        const end = checkout.value
+            ? new Date(checkout.value + "T00:00:00")
+            : null;
+
+        let nights = 1;
+
+        if (start && end && end > start) {
+            nights = Math.round((end - start) / 86400000);
+        }
+
+        const roomCount = Math.min(
+            20,
+            Math.max(1, Number(rooms.value) || 1)
+        );
+
+        const rate = hotel[category];
+        const total = rate * nights * roomCount;
+
+        hotelTotal.textContent = money(total);
+
+        hotelDetails.textContent =
+            nights + (nights === 1 ? " night" : " nights") +
+            " · " + roomCount +
+            (roomCount === 1 ? " room" : " rooms") +
+            " · " + money(rate) + " per room/night";
+
+        hotelLocation.textContent = "Suggested area: " + hotel.area;
+
+        expenseTitle.value =
+            "Hotel stay - " + place +
+            " (" + nights + " nights, " +
+            roomCount + " room(s))";
+
+        expenseAmount.value = total.toFixed(2);
+        expenseDate.value = checkin.value;
+    }
+
+    // ================================================
+    // SET VALID CHECK-IN AND CHECK-OUT DATES
+    // ================================================
+
+    function updateCheckoutMinimum() {
+        checkout.min = checkin.value;
+
+        if (
+            checkin.value &&
+            (!checkout.value || checkout.value <= checkin.value)
+        ) {
+            const nextDay = new Date(checkin.value + "T00:00:00");
+            nextDay.setDate(nextDay.getDate() + 1);
+
+            checkout.value = [
+                nextDay.getFullYear(),
+                String(nextDay.getMonth() + 1).padStart(2, "0"),
+                String(nextDay.getDate()).padStart(2, "0")
+            ].join("-");
+        }
+
+        calculateHotel();
+    }
+
+    // ================================================
+    // EVENT LISTENERS
+    // ================================================
+
+    destination.addEventListener("change", calculateHotel);
+    hotelType.addEventListener("change", calculateHotel);
+    rooms.addEventListener("input", calculateHotel);
+
+    checkin.addEventListener("change", updateCheckoutMinimum);
+    checkout.addEventListener("change", calculateHotel);
+
+    // Validate the estimate before submitting to Flask.
+    hotelForm.addEventListener("submit", function (event) {
+        if (
+            !checkin.value ||
+            !checkout.value ||
+            checkout.value <= checkin.value
+        ) {
+            event.preventDefault();
+            alert("Please select a valid check-in and check-out date.");
+            return;
+        }
+
+        if (
+            !Number.isInteger(Number(rooms.value)) ||
+            Number(rooms.value) < 1 ||
+            Number(rooms.value) > 20
+        ) {
+            event.preventDefault();
+            alert("Please select between 1 and 20 rooms.");
+            return;
+        }
+
+        calculateHotel();
+    });
+
+    // INITIALISE THE CALCULATOR
+    updateCheckoutMinimum();
+</script>
+
+{% endblock %}

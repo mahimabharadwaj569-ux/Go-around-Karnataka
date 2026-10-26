@@ -1,0 +1,56 @@
+{% extends "base.html" %}{% block title %}Dashboard | Trip Companion{% endblock %}
+{% block content %}<section class="dashboard-head">
+    <div><span class="eyebrow">YOUR TRAVEL DESK</span>
+        <h1>Welcome, {{ current_user.full_name }} <span>✦</span></h1>
+        <p>Ready to make a few memories? Your next trip is just a plan away.</p>
+    </div><a class="btn btn-primary" href="{{ url_for('planner') }}">＋ Plan a trip</a>
+</section>
+<section class="stats-grid">
+    <div class="stat-card"><span>Saved trips</span><strong>{{ trips|length }}</strong><small>Your travel history</small>
+    </div>
+    <div class="stat-card"><span>Total expenses</span><strong>₹{{ '%.2f'|format(expense_total) }}</strong><small>All
+            recorded spending</small></div>
+    <div class="stat-card"><span>Booking requests</span><strong>{{ booking_count }}</strong><small>Demo requests
+            saved</small></div>
+
+</section>
+<section class="section dashboard-section">
+    <div class="section-heading">
+        <div><span class="eyebrow">QUICK ACCESS</span>
+            <h2>What would you like to do?</h2>
+        </div>
+    </div>
+    <div class="quick-grid"><a href="{{ url_for('explorer') }}"><span>⌕</span><strong>Explore places</strong><small>All
+                31 districts</small></a><a href="{{ url_for('planner') }}"><span>✈</span><strong>Build
+                itinerary</strong><small>Day-wise travel plan</small></a><a
+            href="{{ url_for('expenses') }}"><span>₹</span><strong>Track expenses</strong><small>Keep the budget
+                tidy</small></a><a href="{{ url_for('hotels') }}"><span>⌂</span><strong>Find stay
+                ideas</strong><small>Hotels and homestays</small></a>
+        </small></a><a href="{{ url_for('profile') }}"><span>☺</span><strong>Your
+                profile</strong><small>Update your details</small></a></div>
+</section>
+{% if trips %}<section class="section">
+    <div class="section-heading">
+        <div><span class="eyebrow">RECENT PLANS</span>
+            <h2>Your latest trips</h2>
+        </div><a class="text-link" href="{{ url_for('history') }}">View history →</a>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>District</th>
+                    <th>Days</th>
+                    <th>Travel style</th>
+                    <th>Created</th>
+                </tr>
+            </thead>
+            <tbody>{% for t in trips[:5] %}<tr>
+                    <td>{{ t.district }}</td>
+                    <td>{{ t.duration }}</td>
+                    <td>{{ t.travel_style }}</td>
+                    <td>{{ t.created_at }}</td>
+                </tr>{% endfor %}</tbody>
+        </table>
+    </div>
+</section>{% endif %}{% endblock %}

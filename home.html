@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Trip Companion | Plan Karnataka{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-shade"></div><div class="hero-content">
+    <span class="eyebrow">YOUR KARNATAKA TRAVEL BUDDY</span>
+    <h1>Travel together.<br><em>Make every rupee count.</em></h1>
+    <p>Explore all 31 districts, discover temples and landmarks, plan day-wise trips, find stay ideas, and track shared travel expenses — all in one place.</p>
+    <div class="hero-actions"><a class="btn btn-primary" href="{{ url_for('planner') if session.get('user_id') else url_for('register') }}">Plan my trip <span>↗</span></a><a class="btn btn-glass" href="{{ url_for('explorer') }}">Explore Karnataka</a></div>
+    <div class="hero-trust"><span>✦ 31 districts</span><span>✦ Solo, couple, family & friends</span><span>✦ No Google Maps needed</span></div>
+  </div><div class="hero-stamp"><strong>ಕರ್ನಾಟಕ</strong><span>Discover more, worry less</span></div>
+</section>
+<section class="section"><div class="section-heading"><div><span class="eyebrow">MADE FOR YOUR KIND OF TRIP</span><h2>One companion. Every travel style.</h2></div><p>From a quick solo escape to a family holiday, start with the trip that suits you.</p></div>
+<div class="style-grid">
+  <article class="style-card"><span class="style-icon">🎒</span><h3>Solo Explorer</h3><p>Flexible routes, heritage walks, central stays, and time to explore at your pace.</p></article>
+  <article class="style-card"><span class="style-icon">💛</span><h3>Couple Getaway</h3><p>Scenic viewpoints, relaxed itineraries, memorable food, and comfortable stays.</p></article>
+  <article class="style-card"><span class="style-icon">👨‍👩‍👧‍👦</span><h3>Family Holiday</h3><p>Manageable travel hops, temple visits, parks, breaks, and family-room reminders.</p></article>
+  <article class="style-card"><span class="style-icon">🧑‍🤝‍🧑</span><h3>Friends Trip</h3><p>Adventure options, local food stops, shared budgets, and group-friendly stays.</p></article>
+</div></section>
+<section class="feature-band"><div><span class="eyebrow">YOUR TRIP, YOUR PLAN</span><h2>From “where should we go?” to “let's go!”</h2><p>Choose a district and number of days. Trip Companion creates a starter itinerary from its famous places, then saves your trip to your history.</p><a class="text-link" href="{{ url_for('explorer') }}">Discover the district guide →</a></div><div class="feature-stats"><div><strong>31</strong><span>Karnataka districts</span></div><div><strong>4</strong><span>Travel styles</span></div><div><strong>₹</strong><span>Expense tracking</span></div></div></section>
+<section class="section"><div class="section-heading"><div><span class="eyebrow">START EXPLORING</span><h2>Popular Karnataka highlights</h2></div><a class="text-link" href="{{ url_for('explorer') }}">See all districts →</a></div>
+<div class="highlight-grid"><a class="highlight h-hampi" href="{{ url_for('explorer', q='Hampi') }}"><span>HERITAGE</span><h3>Hampi</h3><p>Monuments, temples & royal history</p></a><a class="highlight h-coorg" href="{{ url_for('explorer', q='Kodagu') }}"><span>NATURE</span><h3>Kodagu</h3><p>Waterfalls, hills & coffee estates</p></a><a class="highlight h-mysuru" href="{{ url_for('explorer', q='Mysuru') }}"><span>CULTURE</span><h3>Mysuru</h3><p>Palaces, temples & gardens</p></a></div></section>
+{% endblock %}

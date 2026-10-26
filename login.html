@@ -1,0 +1,18 @@
+{% extends "base.html" %}{% block title %}Login | Trip Companion{% endblock %}
+{% block content %}<section class="auth-layout">
+    <div class="auth-art"><span class="eyebrow">WELCOME BACK</span>
+        <h1>Your next Karnataka story starts here.</h1>
+        <p>Your saved trips, goals, bookings and expenses are waiting for you.</p>
+        <div class="art-orbit">✦</div>
+    </div>
+    <div class="auth-panel"><span class="eyebrow">GOOD TO SEE YOU</span>
+        <h2>Log in</h2>
+        <p class="muted">Continue planning your next trip.</p>
+        <form method="post" class="form-stack"><label>Username or email<input name="username" required
+                    autocomplete="username" placeholder="Enter username or email"></label><label>Password<input
+                    type="password" name="password" required autocomplete="current-password"
+                    placeholder="Your password"></label><button class="btn btn-primary full" type="submit">Login
+                securely →</button></form>
+        <p class="auth-switch">New here? <a href="{{ url_for('register') }}">Create an account</a></p>
+    </div>
+</section>{% endblock %}

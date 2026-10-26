@@ -1,0 +1,54 @@
+{% extends "base.html" %}{% block title %}Trip Planner | Trip Companion{% endblock %}
+{% block content %}<section class="page-hero planner-hero"><span class="eyebrow">YOUR PERSONAL ITINERARY</span>
+    <h1>Less scrolling. More exploring.</h1>
+    <p>Pick your district, group style and trip length to create a practical starter itinerary from famous local
+        attractions.</p>
+</section>
+<section class="section planner-layout">
+    <div class="panel"><span class="eyebrow">BUILD YOUR TRIP</span>
+        <h2>Trip details</h2>
+        <form method="post" class="form-stack"><label>Destination district<select name="district" required>
+                    <option value="">Choose a district</option>{% for d in districts %}<option value="{{ d.name }}" {%
+                        if selected and selected.name==d.name %}selected{% endif %}>{{ d.name }}</option>{% endfor %}
+                </select></label><label>Who is travelling?<select name="travel_style">{% for s, desc in styles.items()
+                    %}<option value="{{ s }}" {% if chosen_style==s %}selected{% endif %}>{{ s }}</option>{% endfor
+                    %}</select></label><label>How many days?<select name="duration">{% for n in range(1,15) %}<option
+                        value="{{ n }}" {% if duration==n %}selected{% endif %}>{{ n }} day{{ '' if n == 1 else 's' }}
+                    </option>{% endfor %}</select></label>
+            <div class="form-two"><label>Start date<input type="date" name="start_date"></label><label>End date<input
+                        type="date" name="end_date"></label></div><label>Interests or notes <span
+                    class="optional">(optional)</span><textarea name="notes" rows="3"
+                    placeholder="Example: temples, easy walks, local food, child-friendly stops"></textarea></label><button
+                class="btn btn-primary full" type="submit">Create my itinerary ↗</button>
+        </form>
+        <div class="tip-box"><strong>Travel-style tip</strong>
+            <p>{{ styles.get(chosen_style, styles['Solo']) }}</p>
+        </div>
+    </div>
+    <div class="itinerary-area">{% if selected %}<div class="itinerary-title"><span class="eyebrow">YOUR STARTER
+                PLAN</span>
+            <h2>{{ selected.name }} in {{ duration }} day{{ '' if duration == 1 else 's' }}</h2>
+            <p>Main landmark: <strong>{{ selected.landmark }}</strong></p>
+        </div>{% for day in itinerary %}<article class="day-card">
+            <div class="day-number">DAY<br><strong>{{ day.day }}</strong></div>
+            <div class="day-content">
+                <h3>{% if day.day == 1 %}Arrive & explore{% elif day.day == duration %}Final sights & return{% else
+                    %}Explore at a relaxed pace{% endif %}</h3>{% for p in day.places %}<div class="itinerary-place">
+                    <span>✦</span>
+                    <div><strong>{{ p[0] }}</strong>
+                        <p>{{ p[1] }}</p>
+                    </div>
+                </div>{% endfor %}{% if day.day == 1 %}<p class="day-tip">Tip: start early, allow time for travel
+                    between places, and check opening hours.</p>{% else %}<p class="day-tip">Tip: leave room for meals,
+                    rest, local traffic, weather, and unexpected closures.</p>{% endif %}
+            </div>
+        </article>{% endfor %}<div class="notice">This is a suggested sequence, not a live route or guarantee that every
+            site is open. Check distances and opening times before leaving.</div>{% else %}<div class="planner-empty">
+            <div class="empty-illustration">✈</div><span class="eyebrow">READY WHEN YOU ARE</span>
+            <h2>Your trip starts with a destination.</h2>
+            <p>Choose any of Karnataka's 31 districts and we'll arrange its listed highlights into a day-by-day starter
+                plan.</p>
+            <div class="mini-checks"><span>✓ 1-day trips</span><span>✓ 2-day trips</span><span>✓ 3+ day
+                    trips</span><span>✓ 4 travel styles</span></div>
+        </div>{% endif %}</div>
+</section>{% endblock %}

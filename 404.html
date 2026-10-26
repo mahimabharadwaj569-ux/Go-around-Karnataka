@@ -1,0 +1,5 @@
+{% extends "base.html" %}{% block title %}Page not found | Trip Companion{% endblock %}{% block content %}<section
+    class="empty-state large-empty"><span class="eyebrow">404 • WRONG TURN</span>
+    <h1>This page isn't on the itinerary.</h1>
+    <p>Let's get you back to the travel desk.</p><a class="btn btn-primary" href="{{ url_for('home') }}">Back home</a>
+</section>{% endblock %}

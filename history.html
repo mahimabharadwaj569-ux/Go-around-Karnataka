@@ -1,0 +1,16 @@
+{% extends "base.html" %}{% block title %}Trip History | Trip Companion{% endblock %}
+{% block content %}<section class="page-hero compact-hero"><span class="eyebrow">MEMORIES IN THE MAKING</span>
+    <h1>Your trip history.</h1>
+    <p>Every itinerary you generate is saved here.</p>
+</section>
+<section class="section">{% if trips %}<div class="history-grid">{% for t in trips %}<article class="history-card"><span
+                class="history-day">{{ t.duration }} day{{ '' if t.duration == 1 else 's' }}</span>
+            <h2>{{ t.district }}</h2>
+            <p>Travel style: {{ t.travel_style }}</p>{% if t.start_date %}<p>{{ t.start_date }}{% if t.end_date %} → {{
+                t.end_date }}{% endif %}</p>{% endif %}{% if t.notes %}<p class="muted">{{ t.notes }}</p>{% endif
+            %}<small>Saved {{ t.created_at }}</small>
+        </article>{% endfor %}</div>{% else %}<div class="empty-state">
+        <h2>Your next adventure will appear here.</h2>
+        <p>Create a day-wise itinerary and keep it saved in your history.</p><a class="btn btn-primary"
+            href="{{ url_for('planner') }}">Plan a trip</a>
+    </div>{% endif %}</section>{% endblock %}

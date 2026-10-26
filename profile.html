@@ -1,0 +1,26 @@
+{% extends "base.html" %}{% block title %}Profile | Trip Companion{% endblock %}
+{% block content %}<section class="page-hero compact-hero"><span class="eyebrow">YOUR TRAVEL ID</span>
+    <h1>Your profile</h1>
+    <p>Keep your details and travel preferences up to date.</p>
+</section>
+<section class="section profile-layout">
+    <div class="profile-card">
+        <div class="avatar">{{ user.full_name[:1]|upper }}</div>
+        <h2>{{ user.full_name }}</h2>
+        <p>@{{ user.username }}</p><span class="status-pill">{{ user.travel_style }} traveller</span>
+        <div class="profile-meta"><span>Home district</span><strong>{{ user.district or 'Not selected' }}</strong></div>
+        <div class="profile-meta"><span>Email</span><strong>{{ user.email }}</strong></div>
+    </div>
+    <div class="panel">
+        <h2>Edit details</h2>
+        <form method="post" class="form-stack"><label>Full name<input name="full_name" value="{{ user.full_name }}"
+                    required></label><label>Email<input type="email" name="email" value="{{ user.email }}"
+                    required></label><label>Phone (optional)<input name="phone" value="{{ user.phone or '' }}"
+                    placeholder="Phone number"></label><label>Home district<select name="district">
+                    <option value="">Choose district</option>{% for d in districts %}<option {% if user.district==d.name
+                        %}selected{% endif %}>{{ d.name }}</option>{% endfor %}
+                </select></label><label>Preferred travel style<select name="travel_style">{% for s in styles %}<option
+                        {% if user.travel_style==s %}selected{% endif %}>{{ s }}</option>{% endfor
+                    %}</select></label><button class="btn btn-primary full">Save profile changes</button></form>
+    </div>
+</section>{% endblock %}

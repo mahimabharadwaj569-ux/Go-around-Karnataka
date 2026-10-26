@@ -1,0 +1,23 @@
+{% extends "base.html" %}{% block title %}Register | Trip Companion{% endblock %}
+{% block content %}<section class="auth-layout">
+    <div class="auth-art register-art"><span class="eyebrow">START YOUR JOURNEY</span>
+        <h1>Good trips begin with a plan.</h1>
+        <p>Keep your travel ideas, shared spending, and favourite places together.</p>
+        <div class="art-orbit">✧</div>
+    </div>
+    <div class="auth-panel"><span class="eyebrow">CREATE YOUR ACCOUNT</span>
+        <h2>Join Trip Companion</h2>
+        <form method="post" class="form-stack"><label>Full name<input name="full_name" required
+                    placeholder="Your full name"></label><label>Username<input name="username" required minlength="3"
+                    placeholder="Choose a username"></label><label>Email<input type="email" name="email" required
+                    placeholder="you@example.com"></label><label>Password<input type="password" name="password"
+                    minlength="6" required placeholder="At least 6 characters"></label><label>Home district<select
+                    name="district">
+                    <option value="">Choose district (optional)</option>{% for d in districts %}<option>{{ d.name }}
+                    </option>{% endfor %}
+                </select></label><label>Preferred travel style<select name="travel_style">{% for s in styles %}<option>
+                        {{ s }}</option>{% endfor %}</select></label><button class="btn btn-primary full"
+                type="submit">Create account ↗</button></form>
+        <p class="auth-switch">Already registered? <a href="{{ url_for('login') }}">Login</a></p>
+    </div>
+</section>{% endblock %}

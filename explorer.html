@@ -1,0 +1,29 @@
+{% extends "base.html" %}{% block title %}Explore 31 Districts | Trip Companion{% endblock %}
+{% block content %}<section class="page-hero explorer-hero"><span class="eyebrow">THE DISTRICT FIELD GUIDE</span>
+    <h1>31 districts. A thousand reasons to explore.</h1>
+    <p>Discover famous landmarks, temples, nature spots and practical stay ideas across Karnataka. No map required.</p>
+    <form class="search-bar" method="get"><input name="q" value="{{ q }}"
+            placeholder="Search a district, temple, waterfall or landmark…"><button
+            class="btn btn-primary">Search</button>{% if q %}<a class="btn btn-light"
+            href="{{ url_for('explorer') }}">Clear</a>{% endif %}</form>
+</section>
+<section class="section">
+    <div class="result-note">Showing <strong>{{ found|length }}</strong> district guide{{ '' if found|length == 1 else
+        's' }}.</div>
+    <div class="district-grid">{% for d in found %}<article class="district-card">
+            <div class="district-card-top"><span class="district-number">{{ "%02d"|format(loop.index) }}</span><span
+                    class="district-tag">{{ d.places|length }} highlights</span></div>
+            <h2>{{ d.name }}</h2>
+            <p class="landmark"><span>✦ Main landmark</span><br><strong>{{ d.landmark }}</strong></p>
+            <div class="place-list">{% for p in d.places %}<div class="place-item"><strong>{{ p[0] }}</strong>
+                    <p>{{ p[1] }}</p>
+                </div>{% endfor %}</div>
+            <div class="stay-suggestion"><strong>Stay ideas</strong>
+                <p>{{ d.stays|join(' • ') }}</p><small>Confirm current reviews, hygiene, prices, access and availability
+                    before booking.</small>
+            </div><a class="text-link" href="{{ url_for('hotels', district=d.name) }}">Browse stay ideas →</a>
+        </article>{% else %}<div class="empty-state">
+            <h2>No matches found</h2>
+            <p>Try a district name such as Mysuru, Kodagu, or a landmark such as Hampi.</p>
+        </div>{% endfor %}</div>
+</section>{% endblock %}
